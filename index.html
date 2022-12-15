@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Importing css styles -->
+    <link rel="stylesheet" href="./index.css" />
+    <title>journey dApp</title>
+  </head>
+  <body>
+    <section class="journey-form-section">
+      <section class="section-header">
+        <h1>Quer salvar os dados da jornada permanentemente na Ethereum?</h1>
+      </section>
+      <!-- Form -->
+      <form>
+        <!--<label for="journey-data">journey Data</label>
+        <input type="text" autocomplete="off" id="journey-data" />
+        <label for="journey-publisher">journey Publisher</label>
+        <input type="text" id="journey-publisher" />
+        <label for="journey-travel">journey Travel</label>
+        <input type="text" id="journey-travel" />
+        <label for="journey-lastlocation">journey Last Location</label>
+        <input type="text" id="journey-lastlocation" /> -->
+        <input name="Register" type="button" value="Submit" id="set-new-journey" />
+      </form>
+    </section>
+
+    <!-- Pet details section -->
+    <section class="journey-detail-section">
+      <section class="section-header">
+        <h1>Journey Details</h1>
+      </section>
+      <section class="journey-details">
+        <h3 class="journey-detail-heading">
+          journey Data:
+          <span class="journey-data journey-detail-data"></span>
+        </h3>
+        <h3 class="journey-detail-heading">
+          journey Publisher:
+          <span class="journey-data journey-detail-publisher"></span>
+        </h3>
+        <h3 class="journey-detail-heading">
+          journey Travel:
+          <span class="journey-data journey-detail-travel"></span>
+        </h3>
+        <h3 class="journey-detail-heading">
+          journey Last Location:
+          <span class="journey-data journey-detail-lastlocation"></span>
+        </h3>
+      </section>
+      <section class="section-footer">
+        <button class="show-journey-form-btn">Set New journey</button>
+        <button class="refresh-journey-details-btn">Refresh</button>
+      </section>
+    </section>
+
+    <!-- Importing Ethers.js script -->
+    <script
+      src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+      type="application/javascript"
+    ></script>
+
+    <!-- Importing our javascript file -->
+    <script src="./index.js"></script>
+  </body>
+</html>
