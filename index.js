@@ -142,7 +142,8 @@ const showJourneyFormBtn = document.querySelector(".show-journey-form-btn");
 const journeySection = document.querySelector(".journey-detail-section");
 const setJourneyButton = document.querySelector("#set-new-journey");
 const refreshBtn = document.querySelector(".refresh-journey-details-btn");
-
+// getting data from iota (used in hashes verification)
+const mappingValues = [];
 /* 5. Function to set pet details */
 const setNewJourneyInTheContract = () => {
   // update button value
@@ -159,33 +160,33 @@ const setNewJourneyInTheContract = () => {
   //const journeyPublisher = journeyPublisherInput.value;
   //const journeyTravel = journeyTravelInput.value;
   //const journeyLastLocation = journeyLastLocationInput.value;
-
-  const journeyData = {"widget": {
-    "debug": "on",
-    "window": {
-        "title": "Sample Konfabulator Widget",
-        "name": "main_window",
-        "width": 500,
-        "height": 500
-    },
-    "image": { 
-        "src": "Images/Sun.png",
-        "name": "sun1",
-        "hOffset": 250,
-        "vOffset": 250,
-        "alignment": "center"
-    },
-    "text": {
-        "data": "Click Here",
-        "size": 36,
-        "style": "bold",
-        "name": "text1",
-        "hOffset": 250,
-        "vOffset": 100,
-        "alignment": "center",
-        "onMouseUp": "sun1.opacity = (sun1.opacity / 100) * 90;"
+  // it comes from iota in that format.
+const journeyData = [
+    { hour: 4, count: 28 },  
+    { hour: 5, count: 28 },
+    { hour: 6, count: 27 },
+    { hour: 7, count: 26.5 },
+    { hour: 8, count: 25 },
+    { hour: 9, count: 22 },
+    { hour: 10, count: 26 },
+    { hour: 11, count: 30 },  
+    { hour: 12, count: 20 },
+    { hour: 13, count: 24 },
+    { hour: 14, count: 23.5 },
+    { hour: 15, count: 27 },
+    { hour: 16, count: 26 },
+    { hour: 17, count: 29 },
+	];
+	var aux = [];
+	for (var i=0; i<journeyData.length;++i) {
+    	if (aux.length == 2) {
+        	aux = [];
+    	}
+    	for ([key,value] of Object.entries(journeyData[i])) {
+        	aux.push(value);
     }
-}} ;
+		mappingValues.push(aux)
+	}
   const journeyPublisher = "Rafael";
   const journeyTravel = "Floripa->Curitiba";
   const journeyLastLocation = "Curitiba";
@@ -242,8 +243,26 @@ const getCurrentJourney = async () => {
   document.querySelector(".journey-detail-publisher").innerText = journeyPublisher;
   document.querySelector(".journey-detail-travel").innerText = journeyTravel;
   document.querySelector(".journey-detail-lastlocation").innerText = journeyLastLocation;
-};
 
+  // 6.5 Display the reliability using hash functions;
+  const ethHash = string(JourneyContract.getHashData());
+  const iotaHash = async function sha256(message) {
+    // encode as UTF-8
+    const msgBuffer = new TextEncoder().encode(message);                    
+    // hash the message
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    // convert ArrayBuffer to Array
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    // convert bytes to hex string                  
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+	}
+	if (ethHash == iotaHash) {
+		console.log("VALID!");
+	} else {
+		console.log("NOT VALID!");
+	}
+};
 /* 7. Function to show the pet form on click of button */
 showJourneyFormBtn.addEventListener("click", () => {
 	journeySection.style.display = "none";
